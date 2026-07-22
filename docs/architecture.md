@@ -9,7 +9,7 @@ Browser
 Next.js Route Handlers (BFF)
   | server-only API_BASE_URL + Bearer token
   v
-Portfolio Analytics API v1.2.0
+Ledger Lens API v1.2.0
   |                 |
 PostgreSQL          Redis
 ```

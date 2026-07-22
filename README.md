@@ -1,4 +1,4 @@
-# Portfolio Analytics Web
+# Ledger Lens
 
 [![CI](https://github.com/RujingXu-bit/portfolio-analytics-web/actions/workflows/ci.yml/badge.svg)](https://github.com/RujingXu-bit/portfolio-analytics-web/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/RujingXu-bit/portfolio-analytics-web)](https://github.com/RujingXu-bit/portfolio-analytics-web/releases/tag/v1.0.0)
@@ -11,10 +11,10 @@
 [Backend Release](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.2.0) ·
 [Interview Guide](https://github.com/RujingXu-bit/portfolio-analytics-api/blob/main/docs/interview-guide.md)
 
-![Portfolio Analytics dashboard showing four historical metrics and asset allocation](docs/assets/dashboard-demo.png)
+![Ledger Lens dashboard showing four historical metrics and asset allocation](docs/assets/dashboard-demo.png)
 
 Independent Next.js dashboard for the
-[Portfolio Analytics API v1.2.0](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.2.0).
+[Ledger Lens API v1.2.0](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.2.0).
 It turns an owner-scoped transaction ledger into explainable historical metrics
 and bounded risk summaries without implying live trading, forecasts, or
 investment advice.

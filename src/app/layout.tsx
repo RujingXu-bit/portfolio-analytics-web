@@ -13,14 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://portfolio-analytics-web.vercel.app"),
+  metadataBase: new URL("https://portfolio-analytics-web-hazel.vercel.app"),
   title: {
-    default: "Portfolio Analytics",
-    template: "%s | Portfolio Analytics",
+    default: "Ledger Lens",
+    template: "%s | Ledger Lens",
   },
   description:
     "Explainable portfolio analytics with deterministic financial metrics.",
-  applicationName: "Portfolio Analytics",
+  applicationName: "Ledger Lens",
   keywords: [
     "portfolio analytics",
     "FastAPI",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     "risk metrics",
   ],
   openGraph: {
-    title: "Portfolio Analytics",
+    title: "Ledger Lens",
     description:
       "Explainable portfolio risk built on deterministic financial metrics.",
     type: "website",
@@ -38,13 +38,13 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Portfolio Analytics — Explainable risk. Deterministic metrics.",
+        alt: "Ledger Lens — Explainable risk. Deterministic metrics.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Portfolio Analytics",
+    title: "Ledger Lens",
     description:
       "Explainable portfolio risk built on deterministic financial metrics.",
     images: ["/og-image.png"],
