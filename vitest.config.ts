@@ -14,7 +14,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    exclude: [...configDefaults.exclude, "tests/e2e/**"],
+    exclude: [...configDefaults.exclude, "tests/e2e/**", "tests/public/**"],
     restoreMocks: true,
     setupFiles: [resolve(root, "src/test/setup.ts")],
   },
