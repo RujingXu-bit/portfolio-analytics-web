@@ -1,6 +1,6 @@
-# Portfolio Analytics Web execution rules
+# Ledger Lens Web execution rules
 
-This repository is the independent web client for the Portfolio Analytics API.
+This repository is the independent web client for the Ledger Lens API.
 Work on one Task ID at a time and keep the backend `PROJECT_PLAN.md` authoritative.
 
 ## Runtime and package management

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Portfolio Analytics Web are documented here.
+All notable changes to Ledger Lens are documented here.
 
 ## [Unreleased]
 
@@ -14,7 +14,7 @@ All notable changes to Portfolio Analytics Web are documented here.
 ### Changed
 
 - Pinned API contract and generated TypeScript declarations now target the
-  published Portfolio Analytics API v1.2.0.
+  published Ledger Lens API v1.2.0.
 
 ## [1.0.0] - 2026-07-22
 

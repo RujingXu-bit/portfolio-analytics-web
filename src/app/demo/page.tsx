@@ -17,7 +17,7 @@ import {
 
 export const metadata = {
   title: "Offline Demo",
-  description: "A deterministic, network-independent Portfolio Analytics fixture.",
+  description: "A deterministic, network-independent Ledger Lens fixture.",
 };
 
 export default function DemoPage() {
