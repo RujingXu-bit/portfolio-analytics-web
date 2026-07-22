@@ -14,6 +14,16 @@ describe("portfolio BFF allowlist", () => {
     ["GET", [portfolioId, "analytics"], `/portfolios/${portfolioId}/analytics`],
     ["GET", [portfolioId, "insights"], `/portfolios/${portfolioId}/insights`],
     ["POST", [portfolioId, "insights"], `/portfolios/${portfolioId}/insights`],
+    [
+      "POST",
+      [portfolioId, "transactions", "import", "preview"],
+      `/portfolios/${portfolioId}/transactions/import/preview`,
+    ],
+    [
+      "POST",
+      [portfolioId, "transactions", "import"],
+      `/portfolios/${portfolioId}/transactions/import`,
+    ],
   ] as const)("allows %s %j", (method, segments, expected) => {
     expect(resolvePortfolioBackendPath(method, segments as string[] | undefined)).toBe(expected);
   });
@@ -24,6 +34,9 @@ describe("portfolio BFF allowlist", () => {
     ["GET", [portfolioId, "delete"]],
     ["GET", ["not-a-uuid"]],
     ["GET", [portfolioId, "transactions", "extra"]],
+    ["GET", [portfolioId, "transactions", "import"]],
+    ["POST", [portfolioId, "transactions", "import", "commit"]],
+    ["POST", [portfolioId, "transactions", "import", "preview", "extra"]],
   ] as const)("rejects %s %j", (method, segments) => {
     expect(resolvePortfolioBackendPath(method, [...segments])).toBeNull();
   });

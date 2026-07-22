@@ -36,6 +36,24 @@ async function body(request) {
   return JSON.parse(Buffer.concat(chunks).toString("utf8") || "{}");
 }
 
+async function rawBody(request) {
+  const chunks = [];
+  for await (const chunk of request) chunks.push(chunk);
+  return Buffer.concat(chunks).toString("utf8");
+}
+
+function csvRows(csv) {
+  const [headerLine, ...lines] = csv.trim().split(/\r?\n/);
+  const headers = headerLine.replace(/^\uFEFF/, "").split(",");
+  return lines.map((line, index) => {
+    const values = line.split(",");
+    return {
+      row_number: index + 2,
+      value: Object.fromEntries(headers.map((header, position) => [header, values[position] ?? ""])),
+    };
+  });
+}
+
 function authorized(request, response) {
   if (request.headers.authorization === `Bearer ${token}`) return true;
   send(response, 401, {
@@ -80,6 +98,99 @@ const server = createServer(async (request, response) => {
     transactions.set(portfolio.id, []);
     snapshots.set(portfolio.id, []);
     return send(response, 201, portfolio);
+  }
+
+  const importMatch = url.pathname.match(
+    /^\/portfolios\/([^/]+)\/transactions\/import(?:\/(preview))?$/,
+  );
+  if (importMatch && request.method === "POST") {
+    const [, portfolioId, previewMode] = importMatch;
+    const portfolio = portfolios.find((item) => item.id === portfolioId);
+    if (!portfolio) {
+      return send(response, 404, {
+        error: { code: "portfolio_not_found", message: "portfolio not found" },
+      });
+    }
+    const rows = csvRows(await rawBody(request));
+    const current = transactions.get(portfolioId) ?? [];
+    if (previewMode) {
+      const results = rows.map(({ row_number, value }) => {
+        const existing = current.find((item) => item.external_id === value.external_id);
+        const invalid = value.transaction_type === "BUY" && !value.quantity;
+        return {
+          row_number,
+          external_id: value.external_id || null,
+          status: invalid ? "invalid" : existing ? "replay" : "ready",
+          normalized: invalid
+            ? null
+            : {
+                external_id: value.external_id,
+                transaction_type: value.transaction_type,
+                occurred_at: value.occurred_at,
+                symbol: value.symbol || null,
+                quantity: value.quantity || null,
+                unit_price: value.unit_price || null,
+                cash_amount: value.cash_amount || null,
+                fees: value.fees || "0",
+              },
+          errors: invalid
+            ? [{ code: "invalid_field", field: "quantity", message: "quantity is required" }]
+            : [],
+        };
+      });
+      return send(response, 200, {
+        rows: results,
+        summary: {
+          total_rows: results.length,
+          ready_rows: results.filter((row) => row.status === "ready").length,
+          replay_rows: results.filter((row) => row.status === "replay").length,
+          invalid_rows: results.filter((row) => row.status === "invalid").length,
+        },
+      });
+    }
+    const results = rows.map(({ row_number, value }) => {
+      const existing = current.find((item) => item.external_id === value.external_id);
+      const invalid = value.transaction_type === "BUY" && !value.quantity;
+      if (invalid) {
+        return {
+          row_number,
+          external_id: value.external_id || null,
+          status: "failed",
+          transaction: null,
+          errors: [{ code: "invalid_field", field: "quantity", message: "quantity is required" }],
+        };
+      }
+      const transaction = existing ?? {
+        id: randomUUID(),
+        portfolio_id: portfolioId,
+        external_id: value.external_id,
+        transaction_type: value.transaction_type,
+        occurred_at: value.occurred_at,
+        symbol: value.symbol || null,
+        quantity: value.quantity || null,
+        unit_price: value.unit_price || null,
+        cash_amount: value.cash_amount || null,
+        fees: value.fees || "0",
+      };
+      if (!existing) current.push(transaction);
+      return {
+        row_number,
+        external_id: value.external_id,
+        status: existing ? "replayed" : "created",
+        transaction,
+        errors: [],
+      };
+    });
+    transactions.set(portfolioId, current);
+    return send(response, 200, {
+      rows: results,
+      summary: {
+        total_rows: results.length,
+        created_rows: results.filter((row) => row.status === "created").length,
+        replayed_rows: results.filter((row) => row.status === "replayed").length,
+        failed_rows: results.filter((row) => row.status === "failed").length,
+      },
+    });
   }
 
   const match = url.pathname.match(

@@ -101,4 +101,47 @@ describe("portfolio BFF proxy", () => {
     expect(response.status).toBe(400);
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  it("forwards CSV import bytes and authorization only to an allowlisted path", async () => {
+    process.env.API_BASE_URL = "https://api.example";
+    process.env.APP_ORIGIN = "https://portfolio.example";
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
+      Response.json({
+        rows: [],
+        summary: { total_rows: 0, ready_rows: 0, replay_rows: 0, invalid_rows: 0 },
+      }),
+    );
+    const csv = new TextEncoder().encode("external_id,transaction_type\nrow-1,DEPOSIT\n");
+    const request = new NextRequest(
+      "https://portfolio.example/api/portfolios/5a419c0a-4f25-4b7f-bf77-7489fb2e3be8/transactions/import/preview",
+      {
+        method: "POST",
+        headers: {
+          Cookie: "portfolio_session=private-cookie-jwt",
+          Origin: "https://portfolio.example",
+          "Content-Type": "text/csv",
+        },
+        body: csv,
+      },
+    );
+
+    const response = await POST(request, {
+      params: Promise.resolve({
+        segments: [
+          "5a419c0a-4f25-4b7f-bf77-7489fb2e3be8",
+          "transactions",
+          "import",
+          "preview",
+        ],
+      }),
+    });
+    const backendInit = fetchMock.mock.calls[0]?.[1];
+
+    expect(response.status).toBe(200);
+    expect(new Headers(backendInit?.headers).get("content-type")).toBe("text/csv");
+    expect(new Headers(backendInit?.headers).get("authorization")).toBe(
+      "Bearer private-cookie-jwt",
+    );
+    expect(new Uint8Array(backendInit?.body as ArrayBuffer)).toEqual(csv);
+  });
 });

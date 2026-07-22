@@ -1,6 +1,7 @@
 import "server-only";
 
 const MAX_JSON_BODY_BYTES = 32_768;
+export const MAX_CSV_BODY_BYTES = 1_000_000;
 
 export class InvalidJsonBodyError extends Error {
   constructor() {
@@ -13,6 +14,13 @@ export class UnexpectedRequestBodyError extends Error {
   constructor() {
     super("This request does not accept a request body");
     this.name = "UnexpectedRequestBodyError";
+  }
+}
+
+export class InvalidCsvBodyError extends Error {
+  constructor(message = "A UTF-8 text/csv request body is required") {
+    super(message);
+    this.name = "InvalidCsvBodyError";
   }
 }
 
@@ -59,4 +67,25 @@ export async function readJsonObject(
     throw new InvalidJsonBodyError();
   }
   return value as Record<string, unknown>;
+}
+
+export async function readCsvBody(request: Request): Promise<ArrayBuffer> {
+  const contentType = request.headers.get("content-type")?.split(";", 1)[0];
+  const declaredLength = Number(request.headers.get("content-length") ?? "0");
+  if (
+    contentType !== "text/csv" ||
+    !Number.isFinite(declaredLength) ||
+    declaredLength > MAX_CSV_BODY_BYTES
+  ) {
+    throw new InvalidCsvBodyError();
+  }
+
+  const body = await request.arrayBuffer();
+  if (body.byteLength === 0) {
+    throw new InvalidCsvBodyError("The CSV file is empty");
+  }
+  if (body.byteLength > MAX_CSV_BODY_BYTES) {
+    throw new InvalidCsvBodyError("The CSV file exceeds the 1 MB limit");
+  }
+  return body;
 }

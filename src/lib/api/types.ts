@@ -11,6 +11,14 @@ export type AssetWeight = components["schemas"]["AssetWeightResponse"];
 export type Insight = components["schemas"]["PortfolioInsightResponse"];
 export type Snapshot = components["schemas"]["AnalysisSnapshotResponse"];
 export type SnapshotPage = components["schemas"]["AnalysisSnapshotPageResponse"];
+export type TransactionImportPreview =
+  components["schemas"]["TransactionImportPreviewResponse"];
+export type TransactionImportPreviewRow =
+  components["schemas"]["TransactionImportPreviewRowResponse"];
+export type TransactionImportCommit =
+  components["schemas"]["TransactionImportCommitResponse"];
+export type TransactionImportCommitRow =
+  components["schemas"]["TransactionImportCommitRowResponse"];
 
 export interface SafeSession {
   authenticated: boolean;

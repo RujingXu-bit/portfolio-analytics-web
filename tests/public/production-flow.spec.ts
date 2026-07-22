@@ -46,19 +46,24 @@ test("new visitor completes the public portfolio workflow", async ({
   await page.getByRole("button", { name: "Create portfolio" }).click();
   await expect(page).toHaveURL(/\/portfolios\/[0-9a-f-]+$/);
 
-  await page.getByLabel("Date and time").fill("2026-01-02T09:00");
-  await page.getByLabel("Cash amount").fill("2000");
-  await page.getByRole("button", { name: "Record transaction" }).click();
-  await expect(page.getByRole("cell", { name: "Deposit" })).toBeVisible();
-
-  await page.getByLabel("Transaction type").selectOption("BUY");
-  await page.getByLabel("Date and time").fill("2026-01-03T14:30");
-  await page.getByLabel("Symbol").fill("MSFT");
-  await page.getByLabel("Quantity").fill("5");
-  await page.getByLabel("Unit price").fill("180");
-  await page.getByLabel("Fees").fill("1");
-  await page.getByRole("button", { name: "Record transaction" }).click();
-  await expect(page.getByRole("cell", { name: "MSFT" })).toBeVisible();
+  await page.getByLabel("CSV file").setInputFiles({
+    name: `public-${suffix}.csv`,
+    mimeType: "text/csv",
+    buffer: Buffer.from(
+      [
+        "external_id,transaction_type,occurred_at,symbol,quantity,unit_price,cash_amount,fees",
+        `deposit-${suffix},DEPOSIT,2026-01-02T09:00:00Z,,,,2000,0`,
+        `buy-${suffix},BUY,2026-01-03T14:30:00Z,MSFT,5,180,,1`,
+      ].join("\n"),
+    ),
+  });
+  await page.getByRole("button", { name: "Preview import" }).click();
+  await expect(page.getByText("Preview complete. No invalid rows were found.")).toBeVisible();
+  await page.getByRole("button", { name: "Commit 2 rows" }).click();
+  await expect(page.getByText(/2 created, 0 replayed, and 0 failed/)).toBeVisible();
+  const ledger = page.getByRole("table", { name: "Portfolio transaction ledger" });
+  await expect(ledger.getByRole("cell", { name: "Deposit", exact: true })).toBeVisible();
+  await expect(ledger.getByRole("cell", { name: "MSFT", exact: true })).toBeVisible();
 
   await page.getByLabel("Start date").fill("2026-01-02");
   await page.getByLabel("End date").fill("2026-01-30");

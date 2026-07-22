@@ -70,6 +70,8 @@ export function userFacingError(error: unknown): string {
       analytics_unavailable:
         "There is not enough portfolio data for this analysis period.",
       invalid_transaction: "This transaction conflicts with the current holdings.",
+      invalid_csv: "Choose a valid UTF-8 CSV file no larger than 1 MB.",
+      csv_import_invalid: "The CSV could not be parsed. Check the template and try again.",
       validation_error: "Check the highlighted values and try again.",
     };
     return messages[error.code] ?? error.message;

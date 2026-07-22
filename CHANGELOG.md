@@ -2,6 +2,20 @@
 
 All notable changes to Portfolio Analytics Web are documented here.
 
+## [Unreleased]
+
+### Added
+
+- Preview-first CSV transaction import with downloadable template, row-level
+  status and errors, partial commit results, ledger refresh, and replay display.
+- Exact BFF allowlist entries for backend v1.2.0 CSV preview and commit, with
+  raw-byte preservation and a 1 MB request cap.
+
+### Changed
+
+- Pinned API contract and generated TypeScript declarations now target the
+  published Portfolio Analytics API v1.2.0.
+
 ## [1.0.0] - 2026-07-22
 
 ### Added

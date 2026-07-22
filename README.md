@@ -8,13 +8,13 @@
 [Live Demo](https://portfolio-analytics-web-hazel.vercel.app) ·
 [Offline Fixture](https://portfolio-analytics-web-hazel.vercel.app/demo) ·
 [Three-Minute Video](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/download/v1.1.0/portfolio-analytics-demo.mp4) ·
-[Backend Release](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.1.0) ·
+[Backend Release](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.2.0) ·
 [Interview Guide](https://github.com/RujingXu-bit/portfolio-analytics-api/blob/main/docs/interview-guide.md)
 
 ![Portfolio Analytics dashboard showing four historical metrics and asset allocation](docs/assets/dashboard-demo.png)
 
 Independent Next.js dashboard for the
-[Portfolio Analytics API v1.1.0](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.1.0).
+[Portfolio Analytics API v1.2.0](https://github.com/RujingXu-bit/portfolio-analytics-api/releases/tag/v1.2.0).
 It turns an owner-scoped transaction ledger into explainable historical metrics
 and bounded risk summaries without implying live trading, forecasts, or
 investment advice.
@@ -28,6 +28,8 @@ investment advice.
   logout never expose the FastAPI token to browser JavaScript.
 - Portfolio list and creation, followed by conditional DEPOSIT, WITHDRAWAL, BUY,
   and SELL entry with stable idempotency references.
+- Preview-first CSV transaction import with a downloadable template, row-level
+  validation, partial-failure reporting, and idempotent replay status.
 - Explicit date-range analytics with simple return, annualized volatility,
   maximum drawdown, Sharpe ratio, asset allocation, `as_of`, stale provenance,
   and full methodology.
@@ -52,7 +54,7 @@ real-time quotes, prediction, automated trading, and account administration.
 
 ## Local setup
 
-Install Node.js 24 and pnpm 11.9.0. Run the backend v1.1.0 separately, then:
+Install Node.js 24 and pnpm 11.9.0. Run the backend v1.2.0 separately, then:
 
 ```bash
 cp .env.example .env.local
@@ -81,7 +83,7 @@ the BFF, proves the token remains HttpOnly, exercises keyboard entry, and checks
 
 ## Pinned API contract
 
-`openapi/portfolio-analytics-api-v1.1.0.json` is a fixed snapshot from the
+`openapi/portfolio-analytics-api-v1.2.0.json` is a fixed snapshot from the
 published backend. `openapi-typescript` generates `src/lib/api/schema.d.ts`, and
 CI fails if regeneration differs:
 
