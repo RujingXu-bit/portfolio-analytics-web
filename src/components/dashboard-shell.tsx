@@ -53,7 +53,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           <nav aria-label="Workspace navigation" className="hidden items-center gap-1 md:flex">
             <Link aria-current={pathname.startsWith("/portfolios") ? "page" : undefined} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium ${pathname.startsWith("/portfolios") ? "bg-slate-100 text-slate-950" : "text-slate-600 hover:text-slate-950"}`} href="/portfolios"><LayoutDashboard aria-hidden="true" className="size-4" />Portfolios</Link>
             <Link className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-950" href="/demo"><FlaskConical aria-hidden="true" className="size-4" />Offline demo</Link>
-            <a className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-950" href="https://github.com/RujingXu-bit/portfolio-analytics-web"><Code2 aria-hidden="true" className="size-4" />Source</a>
+            <a className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-950" href="https://github.com/RujingXu-bit/Ledger-Lens-web"><Code2 aria-hidden="true" className="size-4" />Source</a>
           </nav>
           <button className="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold text-slate-700 hover:border-slate-400 disabled:opacity-60" disabled={signingOut} onClick={signOut} type="button">{signingOut ? <LoaderCircle aria-hidden="true" className="size-4 animate-spin" /> : <LogOut aria-hidden="true" className="size-4" />}<span className="hidden sm:inline">Sign out</span></button>
         </div>

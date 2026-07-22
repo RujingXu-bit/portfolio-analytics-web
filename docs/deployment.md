@@ -35,7 +35,7 @@ Record the resulting HTTPS API origin, for example
 
 ## 2. Create the Vercel project
 
-Import `RujingXu-bit/portfolio-analytics-web` into a personal Vercel Hobby
+Import `RujingXu-bit/Ledger-Lens-web` into a personal Vercel Hobby
 project. Vercel reads Node.js `24.x` and pnpm `11.9.0` from `package.json`; set
 `ENABLE_EXPERIMENTAL_COREPACK=1` so the pinned package-manager version is used.
 The checked-in `vercel.json` keeps all BFF functions in Frankfurt (`fra1`), near

@@ -142,7 +142,7 @@ export default function Home() {
           <p className="mx-auto mt-6 max-w-xl text-base leading-8 text-slate-600">Use synthetic values only. Public demo data can be reset and the application is not a financial adviser.</p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
             <Link className="rounded-lg bg-slate-950 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800" href="/demo">Open offline demo</Link>
-            <a className="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-500" href="https://github.com/RujingXu-bit/portfolio-analytics-web">Frontend on GitHub</a>
+            <a className="rounded-lg border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-800 hover:border-slate-500" href="https://github.com/RujingXu-bit/Ledger-Lens-web">Frontend on GitHub</a>
           </div>
         </section>
       </main>
