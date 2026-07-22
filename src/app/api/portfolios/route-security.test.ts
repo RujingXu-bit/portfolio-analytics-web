@@ -4,10 +4,13 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { GET, POST } from "@/app/api/portfolios/[[...segments]]/route";
 
 const originalBaseUrl = process.env.API_BASE_URL;
+const originalOrigin = process.env.APP_ORIGIN;
 
 afterEach(() => {
   if (originalBaseUrl === undefined) delete process.env.API_BASE_URL;
   else process.env.API_BASE_URL = originalBaseUrl;
+  if (originalOrigin === undefined) delete process.env.APP_ORIGIN;
+  else process.env.APP_ORIGIN = originalOrigin;
 });
 
 describe("portfolio BFF proxy", () => {
@@ -57,6 +60,7 @@ describe("portfolio BFF proxy", () => {
 
   it("rejects cross-origin portfolio writes before contacting FastAPI", async () => {
     process.env.API_BASE_URL = "https://api.example";
+    process.env.APP_ORIGIN = "https://portfolio.example";
     const fetchMock = vi.spyOn(globalThis, "fetch");
     const request = new NextRequest("https://portfolio.example/api/portfolios", {
       method: "POST",
@@ -78,6 +82,7 @@ describe("portfolio BFF proxy", () => {
 
   it("rejects non-JSON portfolio writes", async () => {
     process.env.API_BASE_URL = "https://api.example";
+    process.env.APP_ORIGIN = "https://portfolio.example";
     const fetchMock = vi.spyOn(globalThis, "fetch");
     const request = new NextRequest("https://portfolio.example/api/portfolios", {
       method: "POST",
