@@ -1,7 +1,7 @@
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { defineConfig } from "vitest/config";
+import { configDefaults, defineConfig } from "vitest/config";
 
 const root = dirname(fileURLToPath(import.meta.url));
 
@@ -14,6 +14,8 @@ export default defineConfig({
   },
   test: {
     environment: "node",
+    exclude: [...configDefaults.exclude, "tests/e2e/**"],
     restoreMocks: true,
+    setupFiles: [resolve(root, "src/test/setup.ts")],
   },
 });

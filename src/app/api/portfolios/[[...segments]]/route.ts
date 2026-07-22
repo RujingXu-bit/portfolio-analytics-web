@@ -3,7 +3,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { callBackend, jsonRequest } from "@/lib/server/backend";
 import { InvalidOriginError, requireSameOrigin } from "@/lib/server/origin";
 import { resolvePortfolioBackendPath } from "@/lib/server/portfolio-allowlist";
-import { InvalidJsonBodyError, readJsonObject } from "@/lib/server/request-body";
+import {
+  InvalidJsonBodyError,
+  readJsonObject,
+  requireEmptyBody,
+  UnexpectedRequestBodyError,
+} from "@/lib/server/request-body";
 import {
   backendUnavailableResponse,
   bffError,
@@ -51,9 +56,7 @@ async function proxy(
     let body: string | undefined;
     if (method === "POST") {
       if (backendPath.endsWith("/insights")) {
-        if (request.body !== null) {
-          return bffError(400, "invalid_request", "Insight requests do not accept a request body");
-        }
+        await requireEmptyBody(request);
       } else {
         const payload = await readJsonObject(request);
         const serialized = jsonRequest(payload);
@@ -73,6 +76,9 @@ async function proxy(
     return response;
   } catch (error) {
     if (error instanceof InvalidJsonBodyError) {
+      return bffError(400, "invalid_request", error.message);
+    }
+    if (error instanceof UnexpectedRequestBodyError) {
       return bffError(400, "invalid_request", error.message);
     }
     return backendUnavailableResponse();

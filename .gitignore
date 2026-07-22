@@ -13,6 +13,9 @@
 # testing
 /coverage
 /.openapi-types.tmp.d.ts
+/playwright-report/
+/test-results/
+/blob-report/
 
 # next.js
 /.next/

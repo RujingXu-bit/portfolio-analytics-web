@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f7f8fa;
-  --foreground: #0f172a;
+  --background: #f4f7f9;
+  --foreground: #101a2c;
+  --navy: #0b1426;
+  --navy-soft: #15233b;
+  --line: #dce3e8;
+  --muted: #5f6b7a;
+  --emerald: #087b61;
+  --emerald-soft: #e2f4ee;
+  --warning: #a15c06;
 }
 
 @theme inline {
@@ -16,4 +23,45 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  min-width: 320px;
+}
+
+::selection {
+  background: #b7e4d6;
+  color: #0b1426;
+}
+
+:focus-visible {
+  outline: 3px solid rgba(8, 123, 97, 0.38);
+  outline-offset: 3px;
+}
+
+button,
+a,
+input,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+.surface-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

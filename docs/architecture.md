@@ -34,3 +34,28 @@ the committed types drift.
 
 The frontend does not require FastAPI CORS because cross-origin browser requests
 are not part of this architecture.
+
+## UI routes and data provenance
+
+| Route | Source | Purpose |
+|---|---|---|
+| `/` | Static | Product boundary, architecture, and project links |
+| `/demo` | Committed fixture | Network-independent outage and interview demo |
+| `/register`, `/login` | Same-origin auth BFF | Establish an HttpOnly session |
+| `/portfolios` | Owner-scoped FastAPI data | List and create workspaces |
+| `/portfolios/{id}` | Owner-scoped FastAPI data | Ledger, analytics, insight, and history flow |
+
+The deterministic fixture reuses presentation components but passes an explicit
+`fixture` provenance value, so it never labels sample values as provider-backed.
+Analytics is not fetched on page load: users choose a period and explicitly run
+it. Risk summaries require a second explicit action. Snapshot history is loaded
+newest-first from the pinned backend query API.
+
+## Validation boundary
+
+Vitest and Testing Library cover pure formatting, stable error mapping,
+conditional form fields, stale/fixture provenance, and client-source token
+scans. Playwright starts a test-only in-memory HTTP adapter behind the real BFF
+and completes registration, Portfolio creation, DEPOSIT/BUY entry, analytics,
+insight generation, and history reload. The adapter is isolated under
+`tests/e2e` and does not ship in the Next.js build.

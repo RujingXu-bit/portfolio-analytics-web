@@ -9,6 +9,28 @@ export class InvalidJsonBodyError extends Error {
   }
 }
 
+export class UnexpectedRequestBodyError extends Error {
+  constructor() {
+    super("This request does not accept a request body");
+    this.name = "UnexpectedRequestBodyError";
+  }
+}
+
+export async function requireEmptyBody(request: Request): Promise<void> {
+  const declaredLength = request.headers.get("content-length");
+  if (declaredLength !== null && Number(declaredLength) > 0) {
+    throw new UnexpectedRequestBodyError();
+  }
+  if (request.body === null) return;
+
+  const reader = request.body.getReader();
+  const first = await reader.read();
+  await reader.cancel();
+  if (!first.done || (first.value?.byteLength ?? 0) > 0) {
+    throw new UnexpectedRequestBodyError();
+  }
+}
+
 export async function readJsonObject(
   request: Request,
 ): Promise<Record<string, unknown>> {
