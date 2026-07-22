@@ -1,0 +1,39 @@
+{
+  "name": "portfolio-analytics-web",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "api:types:generate": "openapi-typescript openapi/portfolio-analytics-api-v1.1.0.json -o src/lib/api/schema.d.ts",
+    "api:types:check": "openapi-typescript openapi/portfolio-analytics-api-v1.1.0.json -o .openapi-types.tmp.d.ts && node scripts/check-openapi-types.mjs",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm api:types:check"
+  },
+  "dependencies": {
+    "next": "16.2.11",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.11",
+    "openapi-typescript": "^7.13.0",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^4.1.10"
+  }
+}
