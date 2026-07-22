@@ -143,6 +143,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/portfolios/{portfolio_id}/transactions/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Commit Transaction Import */
+        post: operations["commit_transaction_import_portfolios__portfolio_id__transactions_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/portfolios/{portfolio_id}/transactions/import/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Transaction Import */
+        post: operations["preview_transaction_import_portfolios__portfolio_id__transactions_import_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -393,6 +427,97 @@ export interface components {
             simple_return: number | null;
             /** Stale */
             stale: boolean;
+        };
+        /** TransactionImportCommitResponse */
+        TransactionImportCommitResponse: {
+            /** Rows */
+            rows: components["schemas"]["TransactionImportCommitRowResponse"][];
+            summary: components["schemas"]["TransactionImportCommitSummaryResponse"];
+        };
+        /** TransactionImportCommitRowResponse */
+        TransactionImportCommitRowResponse: {
+            /** Errors */
+            errors: components["schemas"]["TransactionImportIssueResponse"][];
+            /** External Id */
+            external_id: string | null;
+            /** Row Number */
+            row_number: number;
+            status: components["schemas"]["TransactionImportRowStatus"];
+            transaction: components["schemas"]["TransactionResponse"] | null;
+        };
+        /** TransactionImportCommitSummaryResponse */
+        TransactionImportCommitSummaryResponse: {
+            /** Created Rows */
+            created_rows: number;
+            /** Failed Rows */
+            failed_rows: number;
+            /** Replayed Rows */
+            replayed_rows: number;
+            /** Total Rows */
+            total_rows: number;
+        };
+        /** TransactionImportIssueResponse */
+        TransactionImportIssueResponse: {
+            /** Code */
+            code: string;
+            /** Field */
+            field: string | null;
+            /** Message */
+            message: string;
+        };
+        /** TransactionImportPreviewResponse */
+        TransactionImportPreviewResponse: {
+            /** Rows */
+            rows: components["schemas"]["TransactionImportPreviewRowResponse"][];
+            summary: components["schemas"]["TransactionImportPreviewSummaryResponse"];
+        };
+        /** TransactionImportPreviewRowResponse */
+        TransactionImportPreviewRowResponse: {
+            /** Errors */
+            errors: components["schemas"]["TransactionImportIssueResponse"][];
+            /** External Id */
+            external_id: string | null;
+            normalized: components["schemas"]["TransactionImportValueResponse"] | null;
+            /** Row Number */
+            row_number: number;
+            status: components["schemas"]["TransactionImportRowStatus"];
+        };
+        /** TransactionImportPreviewSummaryResponse */
+        TransactionImportPreviewSummaryResponse: {
+            /** Invalid Rows */
+            invalid_rows: number;
+            /** Ready Rows */
+            ready_rows: number;
+            /** Replay Rows */
+            replay_rows: number;
+            /** Total Rows */
+            total_rows: number;
+        };
+        /**
+         * TransactionImportRowStatus
+         * @enum {string}
+         */
+        TransactionImportRowStatus: "ready" | "replay" | "invalid" | "created" | "replayed" | "failed";
+        /** TransactionImportValueResponse */
+        TransactionImportValueResponse: {
+            /** Cash Amount */
+            cash_amount: string | null;
+            /** External Id */
+            external_id: string;
+            /** Fees */
+            fees: string;
+            /**
+             * Occurred At
+             * Format: date-time
+             */
+            occurred_at: string;
+            /** Quantity */
+            quantity: string | null;
+            /** Symbol */
+            symbol: string | null;
+            transaction_type: components["schemas"]["TransactionType"];
+            /** Unit Price */
+            unit_price: string | null;
         };
         /** TransactionInput */
         TransactionInput: {
@@ -986,6 +1111,112 @@ export interface operations {
             };
             /** @description Conflict */
             409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    commit_transaction_import_portfolios__portfolio_id__transactions_import_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                portfolio_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/csv": string;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionImportCommitResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+            /** @description Too Many Requests */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ErrorResponse"];
+                };
+            };
+        };
+    };
+    preview_transaction_import_portfolios__portfolio_id__transactions_import_preview_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                portfolio_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/csv": string;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TransactionImportPreviewResponse"];
+                };
+            };
+            /** @description Not Found */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };

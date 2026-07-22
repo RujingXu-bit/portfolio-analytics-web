@@ -7,6 +7,7 @@ const BACKEND_TIMEOUT_MS = 20_000;
 export async function callBackend(
   path: string,
   init: Pick<RequestInit, "method" | "body" | "headers"> = {},
+  timeoutMs = BACKEND_TIMEOUT_MS,
 ): Promise<Response> {
   const normalizedPath = path.startsWith("/") ? path.slice(1) : path;
   const target = new URL(normalizedPath, backendBaseUrl());
@@ -17,7 +18,7 @@ export async function callBackend(
     cache: "no-store",
     credentials: "omit",
     redirect: "manual",
-    signal: AbortSignal.timeout(BACKEND_TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
   });
 }
 

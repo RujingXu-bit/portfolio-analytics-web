@@ -9,6 +9,7 @@ import { InsightResults } from "@/components/insight-results";
 import { SnapshotHistory } from "@/components/snapshot-history";
 import { StatusBanner } from "@/components/status-banner";
 import { TransactionForm } from "@/components/transaction-form";
+import { TransactionImport } from "@/components/transaction-import";
 import { TransactionLedger } from "@/components/transaction-ledger";
 import type { Analytics, Insight, Portfolio, SnapshotPage, Transaction } from "@/lib/api/types";
 import { apiRequest, userFacingError } from "@/lib/client/api-client";
@@ -42,6 +43,13 @@ export function PortfolioDetailPage({ portfolioId }: { portfolioId: string }) {
       `/api/portfolios/${portfolioId}/insights?limit=20&offset=0`,
     );
     setSnapshots(page);
+  }, [portfolioId]);
+
+  const loadTransactions = useCallback(async () => {
+    const items = await apiRequest<Transaction[]>(
+      `/api/portfolios/${portfolioId}/transactions`,
+    );
+    setTransactions(items);
   }, [portfolioId]);
 
   useEffect(() => {
@@ -123,6 +131,9 @@ export function PortfolioDetailPage({ portfolioId }: { portfolioId: string }) {
               <TransactionLedger currency={portfolio.base_currency} transactions={transactions} />
             </div>
             <aside className="rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_2px_rgba(15,23,42,0.04)] lg:sticky lg:top-24"><h3 className="font-semibold text-slate-950">Record transaction</h3><p className="mt-2 text-sm leading-6 text-slate-500">Deposit cash before a purchase. Sales cannot exceed current holdings.</p><div className="mt-6"><TransactionForm onCreated={(created) => setTransactions((current) => [...current, created])} portfolioId={portfolioId} /></div></aside>
+          </div>
+          <div className="mt-7">
+            <TransactionImport onCommitted={loadTransactions} portfolioId={portfolioId} />
           </div>
         </section>
 

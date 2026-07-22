@@ -16,8 +16,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:public": "playwright test --config=playwright.public.config.ts",
-    "api:types:generate": "openapi-typescript openapi/portfolio-analytics-api-v1.1.0.json -o src/lib/api/schema.d.ts",
-    "api:types:check": "openapi-typescript openapi/portfolio-analytics-api-v1.1.0.json -o .openapi-types.tmp.d.ts && node scripts/check-openapi-types.mjs",
+    "api:types:generate": "openapi-typescript openapi/portfolio-analytics-api-v1.2.0.json -o src/lib/api/schema.d.ts",
+    "api:types:check": "openapi-typescript openapi/portfolio-analytics-api-v1.2.0.json -o .openapi-types.tmp.d.ts && node scripts/check-openapi-types.mjs",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm api:types:check"
   },
   "dependencies": {

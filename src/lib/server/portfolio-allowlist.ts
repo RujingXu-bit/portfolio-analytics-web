@@ -20,7 +20,27 @@ export function resolvePortfolioBackendPath(
   if (parts.length === 1) {
     return method === "GET" ? `/portfolios/${portfolioId}` : null;
   }
-  if (parts.length !== 2 || !resource) return null;
+  if (!resource) return null;
+
+  if (
+    method === "POST" &&
+    parts.length === 4 &&
+    resource === "transactions" &&
+    parts[2] === "import" &&
+    parts[3] === "preview"
+  ) {
+    return `/portfolios/${portfolioId}/transactions/import/preview`;
+  }
+  if (
+    method === "POST" &&
+    parts.length === 3 &&
+    resource === "transactions" &&
+    parts[2] === "import"
+  ) {
+    return `/portfolios/${portfolioId}/transactions/import`;
+  }
+
+  if (parts.length !== 2) return null;
 
   if (resource === "transactions") {
     return `/portfolios/${portfolioId}/transactions`;

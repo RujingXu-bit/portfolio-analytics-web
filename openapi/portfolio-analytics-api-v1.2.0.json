@@ -676,6 +676,320 @@
         "title": "SnapshotMetricsResponse",
         "type": "object"
       },
+      "TransactionImportCommitResponse": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionImportCommitRowResponse"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/TransactionImportCommitSummaryResponse"
+          }
+        },
+        "required": [
+          "rows",
+          "summary"
+        ],
+        "title": "TransactionImportCommitResponse",
+        "type": "object"
+      },
+      "TransactionImportCommitRowResponse": {
+        "properties": {
+          "errors": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionImportIssueResponse"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "row_number": {
+            "title": "Row Number",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionImportRowStatus"
+          },
+          "transaction": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "row_number",
+          "external_id",
+          "status",
+          "transaction",
+          "errors"
+        ],
+        "title": "TransactionImportCommitRowResponse",
+        "type": "object"
+      },
+      "TransactionImportCommitSummaryResponse": {
+        "properties": {
+          "created_rows": {
+            "title": "Created Rows",
+            "type": "integer"
+          },
+          "failed_rows": {
+            "title": "Failed Rows",
+            "type": "integer"
+          },
+          "replayed_rows": {
+            "title": "Replayed Rows",
+            "type": "integer"
+          },
+          "total_rows": {
+            "title": "Total Rows",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_rows",
+          "created_rows",
+          "replayed_rows",
+          "failed_rows"
+        ],
+        "title": "TransactionImportCommitSummaryResponse",
+        "type": "object"
+      },
+      "TransactionImportIssueResponse": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "field"
+        ],
+        "title": "TransactionImportIssueResponse",
+        "type": "object"
+      },
+      "TransactionImportPreviewResponse": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionImportPreviewRowResponse"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "summary": {
+            "$ref": "#/components/schemas/TransactionImportPreviewSummaryResponse"
+          }
+        },
+        "required": [
+          "rows",
+          "summary"
+        ],
+        "title": "TransactionImportPreviewResponse",
+        "type": "object"
+      },
+      "TransactionImportPreviewRowResponse": {
+        "properties": {
+          "errors": {
+            "items": {
+              "$ref": "#/components/schemas/TransactionImportIssueResponse"
+            },
+            "title": "Errors",
+            "type": "array"
+          },
+          "external_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Id"
+          },
+          "normalized": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionImportValueResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "row_number": {
+            "title": "Row Number",
+            "type": "integer"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionImportRowStatus"
+          }
+        },
+        "required": [
+          "row_number",
+          "external_id",
+          "status",
+          "normalized",
+          "errors"
+        ],
+        "title": "TransactionImportPreviewRowResponse",
+        "type": "object"
+      },
+      "TransactionImportPreviewSummaryResponse": {
+        "properties": {
+          "invalid_rows": {
+            "title": "Invalid Rows",
+            "type": "integer"
+          },
+          "ready_rows": {
+            "title": "Ready Rows",
+            "type": "integer"
+          },
+          "replay_rows": {
+            "title": "Replay Rows",
+            "type": "integer"
+          },
+          "total_rows": {
+            "title": "Total Rows",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_rows",
+          "ready_rows",
+          "replay_rows",
+          "invalid_rows"
+        ],
+        "title": "TransactionImportPreviewSummaryResponse",
+        "type": "object"
+      },
+      "TransactionImportRowStatus": {
+        "enum": [
+          "ready",
+          "replay",
+          "invalid",
+          "created",
+          "replayed",
+          "failed"
+        ],
+        "title": "TransactionImportRowStatus",
+        "type": "string"
+      },
+      "TransactionImportValueResponse": {
+        "properties": {
+          "cash_amount": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cash Amount"
+          },
+          "external_id": {
+            "title": "External Id",
+            "type": "string"
+          },
+          "fees": {
+            "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+            "title": "Fees",
+            "type": "string"
+          },
+          "occurred_at": {
+            "format": "date-time",
+            "title": "Occurred At",
+            "type": "string"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "symbol": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Symbol"
+          },
+          "transaction_type": {
+            "$ref": "#/components/schemas/TransactionType"
+          },
+          "unit_price": {
+            "anyOf": [
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Price"
+          }
+        },
+        "required": [
+          "external_id",
+          "transaction_type",
+          "occurred_at",
+          "symbol",
+          "quantity",
+          "unit_price",
+          "cash_amount",
+          "fees"
+        ],
+        "title": "TransactionImportValueResponse",
+        "type": "object"
+      },
       "TransactionInput": {
         "properties": {
           "cash_amount": {
@@ -947,7 +1261,7 @@
   },
   "info": {
     "title": "Portfolio Analytics API",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "openapi": "3.1.0",
   "paths": {
@@ -1717,6 +2031,170 @@
           }
         ],
         "summary": "Create Transaction",
+        "tags": [
+          "portfolios"
+        ]
+      }
+    },
+    "/portfolios/{portfolio_id}/transactions/import": {
+      "post": {
+        "operationId": "commit_transaction_import_portfolios__portfolio_id__transactions_import_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "portfolio_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Portfolio Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "text/csv": {
+              "schema": {
+                "contentMediaType": "application/octet-stream",
+                "description": "The same UTF-8 CSV previously checked by preview",
+                "maxLength": 1000000,
+                "title": "Csv Data",
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionImportCommitResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Commit Transaction Import",
+        "tags": [
+          "portfolios"
+        ]
+      }
+    },
+    "/portfolios/{portfolio_id}/transactions/import/preview": {
+      "post": {
+        "operationId": "preview_transaction_import_portfolios__portfolio_id__transactions_import_preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "portfolio_id",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Portfolio Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "text/csv": {
+              "schema": {
+                "contentMediaType": "application/octet-stream",
+                "description": "UTF-8 CSV with at most 500 non-blank transaction rows",
+                "maxLength": 1000000,
+                "title": "Csv Data",
+                "type": "string"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionImportPreviewResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "429": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Too Many Requests"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Preview Transaction Import",
         "tags": [
           "portfolios"
         ]

@@ -4,7 +4,9 @@ import { callBackend, jsonRequest } from "@/lib/server/backend";
 import { InvalidOriginError, requireSameOrigin } from "@/lib/server/origin";
 import { resolvePortfolioBackendPath } from "@/lib/server/portfolio-allowlist";
 import {
+  InvalidCsvBodyError,
   InvalidJsonBodyError,
+  readCsvBody,
   readJsonObject,
   requireEmptyBody,
   UnexpectedRequestBodyError,
@@ -20,6 +22,8 @@ import { clearSessionCookie, SESSION_COOKIE_NAME } from "@/lib/server/session";
 interface RouteContext {
   params: Promise<{ segments?: string[] }>;
 }
+
+const CSV_IMPORT_TIMEOUT_MS = 60_000;
 
 async function proxy(
   request: NextRequest,
@@ -53,9 +57,12 @@ async function proxy(
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     });
-    let body: string | undefined;
+    let body: BodyInit | undefined;
     if (method === "POST") {
-      if (backendPath.endsWith("/insights")) {
+      if (backendPath.includes("/transactions/import")) {
+        body = await readCsvBody(request);
+        headers.set("Content-Type", "text/csv");
+      } else if (backendPath.endsWith("/insights")) {
         await requireEmptyBody(request);
       } else {
         const payload = await readJsonObject(request);
@@ -70,11 +77,17 @@ async function proxy(
     const backendResponse = await callBackend(
       `${backendPath}${request.nextUrl.search}`,
       { method, body, headers },
+      backendPath.includes("/transactions/import")
+        ? CSV_IMPORT_TIMEOUT_MS
+        : undefined,
     );
     const response = await forwardBackendJson(backendResponse);
     if (backendResponse.status === 401) clearSessionCookie(response);
     return response;
   } catch (error) {
+    if (error instanceof InvalidCsvBodyError) {
+      return bffError(400, "invalid_csv", error.message);
+    }
     if (error instanceof InvalidJsonBodyError) {
       return bffError(400, "invalid_request", error.message);
     }
